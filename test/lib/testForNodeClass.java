@@ -2,12 +2,11 @@ package lib;
 
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.Test;
-import org.junit.jupiter.api.BeforeEach;
 
 public class testForNodeClass {
 
-    public node<String> testingNode = new node<String>("HelloWorld");
-    node<String> nextNode = new node<String>("nextNode");
+    public Node<String> testingNode = new Node<String>("HelloWorld");
+    Node<String> nextNode = new Node<String>("nextNode");
     @Test
     public void testGetData() {
         String testString = "HelloWorld";
@@ -24,7 +23,7 @@ public class testForNodeClass {
     @Test
     public void testGetAndSetNextNode() {
         testingNode.setNextNode(nextNode);
-        node<String> nextNodeTestingNode = testingNode.getNextNode();
+        Node<String> nextNodeTestingNode = testingNode.getNextNode();
         assertEquals(nextNode, nextNodeTestingNode);
     }
 

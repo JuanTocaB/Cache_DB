@@ -1,10 +1,10 @@
 package lib;
 
-public class binaryTreeNodes <dt extends Comparable<dt>> {
+public class BinaryTreeNode<T extends Comparable<T>> {
 
-    private nodeForTree<dt> rootNode;
+    private TreeNode<T> rootNode;
 
-    public binaryTreeNodes(){}
+    public BinaryTreeNode(){}
 
     public boolean isItEmpty() {return rootNode == null;}
     public int treeSize() {
@@ -13,7 +13,7 @@ public class binaryTreeNodes <dt extends Comparable<dt>> {
 
     }
 
-    public int getAmountOfNodes(nodeForTree<dt> currentNode){
+    private int getAmountOfNodes(TreeNode<T> currentNode){
         if (currentNode == null) return 0;
         return getAmountOfNodes(currentNode.getLeftNode()) + getAmountOfNodes(currentNode.getRightNode()) + 1;
 
@@ -27,7 +27,7 @@ public class binaryTreeNodes <dt extends Comparable<dt>> {
 
     }
 
-    private int getNodeData(nodeForTree<dt> currentNode, Object[] arrayToFill, int nodeIndex) {
+    private int getNodeData(TreeNode<T> currentNode, Object[] arrayToFill, int nodeIndex) {
         if (currentNode == null) return 0;
         int leftNodes = getNodeData(currentNode.getLeftNode(), arrayToFill, nodeIndex);
         arrayToFill[nodeIndex + leftNodes] = currentNode.getNodeData();
@@ -36,13 +36,13 @@ public class binaryTreeNodes <dt extends Comparable<dt>> {
 
     }
 
-    public nodeForTree<dt> dataSearch(dt data) {
+    public TreeNode<T> dataSearch(T data) {
         if (rootNode == null) return null;
         return searchDataInTree(rootNode, data);
 
     }
 
-    private nodeForTree<dt> searchDataInTree(nodeForTree<dt> currentNode, dt data) {
+    private TreeNode<T> searchDataInTree(TreeNode<T> currentNode, T data) {
         if (currentNode == null) return null;
         if (data.compareTo(currentNode.getNodeData()) == 0) return currentNode;
         if (data.compareTo(currentNode.getNodeData()) < 0) return searchDataInTree(currentNode.getLeftNode(), data);
@@ -50,9 +50,9 @@ public class binaryTreeNodes <dt extends Comparable<dt>> {
 
     }
 
-    public nodeForTree<dt> getRootNode(){return rootNode;}
+    public TreeNode<T> getRootNode(){return rootNode;}
 
-    private void addNode(nodeForTree<dt> currentNode, nodeForTree<dt> nodeToAdd) {
+    private void addNode(TreeNode<T> currentNode, TreeNode<T> nodeToAdd) {
         if (nodeToAdd.getNodeData().compareTo(currentNode.getNodeData()) == 0) {
             currentNode.setNodeData(nodeToAdd.getNodeData());
 
@@ -72,17 +72,17 @@ public class binaryTreeNodes <dt extends Comparable<dt>> {
         }
     }
 
-    public void add(dt data) {
-        nodeForTree<dt> newNodeToAdd = new nodeForTree<>(data);
+    public void add(T data) {
+        TreeNode<T> newNodeToAdd = new TreeNode<>(data);
         if(rootNode == null) {rootNode = newNodeToAdd;}
         else {addNode(rootNode, newNodeToAdd);}
 
     }
 
-    public void removeNode(dt data) {
-        nodeForTree<dt> nodeRemove = dataSearch(data);
+    public void removeNode(T data) {
+        TreeNode<T> nodeRemove = dataSearch(data);
         if(nodeRemove == null) return;
-        nodeForTree<dt> nodeParent = searchParent(nodeRemove);
+        TreeNode<T> nodeParent = searchParent(nodeRemove);
 
         if (nodeRemove.getLeftNode() != null && nodeRemove.getRightNode() != null) {
             removeNodeWithTwoChildren(nodeParent, nodeRemove);
@@ -93,8 +93,8 @@ public class binaryTreeNodes <dt extends Comparable<dt>> {
         }
     }
 
-    private void removeNodeWithZeroOrOneChild(nodeForTree<dt> parentNode, nodeForTree<dt> childNode){
-        nodeForTree<dt> replacementChild = childNode.getLeftNode() !=null ?
+    private void removeNodeWithZeroOrOneChild(TreeNode<T> parentNode, TreeNode<T> childNode){
+        TreeNode<T> replacementChild = childNode.getLeftNode() !=null ?
                 childNode.getLeftNode() : childNode.getRightNode();
 
         if (parentNode != null) {
@@ -105,8 +105,8 @@ public class binaryTreeNodes <dt extends Comparable<dt>> {
 
     }
 
-    private void removeNodeWithTwoChildren(nodeForTree<dt> parentNode, nodeForTree<dt> childNode) {
-        nodeForTree<dt> replacementChild = findMostLeftNode(childNode.getRightNode());
+    private void removeNodeWithTwoChildren(TreeNode<T> parentNode, TreeNode<T> childNode) {
+        TreeNode<T> replacementChild = findMostLeftNode(childNode.getRightNode());
         removeNodeWithZeroOrOneChild(searchParent(replacementChild), replacementChild);
 
         replacementChild.setLeftNode(childNode.getLeftNode());
@@ -119,15 +119,15 @@ public class binaryTreeNodes <dt extends Comparable<dt>> {
         } else {rootNode = replacementChild;}
     }
 
-    private nodeForTree<dt> findMostLeftNode(nodeForTree<dt> currentNode) {
+    private TreeNode<T> findMostLeftNode(TreeNode<T> currentNode) {
         if (currentNode.getLeftNode() == null) return currentNode;
         return findMostLeftNode(currentNode);
 
     }
 
-    private nodeForTree<dt> searchParent(nodeForTree<dt> childNode) {return searchNodeParent(rootNode, childNode);}
+    private TreeNode<T> searchParent(TreeNode<T> childNode) {return searchNodeParent(rootNode, childNode);}
 
-    private nodeForTree<dt> searchNodeParent(nodeForTree<dt> currentNode, nodeForTree<dt> childNode) {
+    private TreeNode<T> searchNodeParent(TreeNode<T> currentNode, TreeNode<T> childNode) {
         if (currentNode == null) return null;
         if (currentNode.getRightNode() == childNode || currentNode.getLeftNode() == childNode) return currentNode;
         if (childNode.getNodeData().compareTo(currentNode.getNodeData()) < 0) {
@@ -136,5 +136,5 @@ public class binaryTreeNodes <dt extends Comparable<dt>> {
         } else return searchNodeParent(currentNode.getRightNode(), childNode);
 
     }
-    
+
 }
