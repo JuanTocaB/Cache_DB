@@ -1,3 +1,5 @@
+package Cache_DB.Cache;
+
 public interface ICache {
     /**
      * Get all keys stored in cache.

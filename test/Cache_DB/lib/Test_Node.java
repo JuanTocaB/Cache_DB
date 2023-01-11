@@ -1,9 +1,10 @@
-package lib;
+package Cache_DB.lib;
 
 import static org.junit.jupiter.api.Assertions.*;
+
 import org.junit.Test;
 
-public class testForNodeClass {
+public class Test_Node {
 
     public Node<String> testingNode = new Node<String>("HelloWorld");
     Node<String> nextNode = new Node<String>("nextNode");

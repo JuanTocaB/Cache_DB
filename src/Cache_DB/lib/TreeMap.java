@@ -1,4 +1,6 @@
-package lib;
+package Cache_DB.lib;
+
+import Cache_DB.lib.Exceptions.KeyNotFoundException;
 
 public class TreeMap <TKey extends Comparable<TKey>, TValue> {
 
