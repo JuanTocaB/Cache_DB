@@ -9,6 +9,12 @@ public class FileManager {
 
     public FileManager(){}
 
+    /**
+     * Creates a file with a key and value
+     * @param Key Key to be stored.
+     * @param Value value to be stored.
+     * @throws IOException when the fileWriter doesn't work.
+     */
     public void createFile(String Key, String Value) throws IOException {
         try {
             FileWriter dataWrite = new FileWriter("./" + String.format("%d", Key.hashCode()) + ".txt");
@@ -26,6 +32,12 @@ public class FileManager {
 
     }
 
+    /**
+     * gets the key's value
+     * @param Key Key for getting the value
+     * @throws IOException the file wasn't found.
+     * @throws KeyNotFoundException when the key wasn't found
+     */
     public String getFileValue(String Key) throws IOException, KeyNotFoundException {
 
         try {
@@ -44,6 +56,11 @@ public class FileManager {
         return null;
     }
 
+    /**
+     * Checks if the key exists
+     * @param key to check if exists
+     * @throws IOException the file wasn't found.
+     */
     public boolean checkKey(String key) throws IOException {
         try{
             BufferedReader fileBuffered = new BufferedReader(new FileReader("./Keys.txt"));
@@ -57,6 +74,10 @@ public class FileManager {
 
     }
 
+    /**
+     * deletes file
+     * @param Key to check if exists
+     */
     public void deleteFile(String Key) {
         String fileHash = String.format("%d", Key.hashCode());
         File fileToDelete = new File("./" + fileHash + ".txt");
