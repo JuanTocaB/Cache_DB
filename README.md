@@ -1,4 +1,5 @@
 <h1 align="center">Welcome to Cache_DB :floppy_disk:</h1>
+<image src="./Terminal.png">
 <p>
   <img alt="Version" src="https://img.shields.io/badge/version-1.0-blue.svg?cacheSeconds=2592000" />
   <a href="empty" target="_blank">
