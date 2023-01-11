@@ -2,6 +2,8 @@ package Cache_DB.Cache;
 
 import java.io.File;
 import java.io.*;
+
+import Cache_DB.lib.Exceptions.DuplicatedKeyException;
 import Cache_DB.lib.Exceptions.KeyNotFoundException;
 public class FileManager {
 
@@ -16,7 +18,7 @@ public class FileManager {
         } catch (IOException error) {throw new IOException();}
 
         if (!checkKey(Key)) {
-            FileWriter keys = new FileWriter("./Keys.txt", false);
+            FileWriter keys = new FileWriter("./Keys.txt", true);
             keys.write(String.format("%d => " + Key, Key.hashCode()));
             keys.write("\n");
             keys.close();
@@ -31,10 +33,12 @@ public class FileManager {
             String filePath = "./" + fileHash + ".txt";
             FileReader file = new FileReader(filePath);
             BufferedReader fileBuffered = new BufferedReader(file);
-            while (fileBuffered.readLine() != null) {
-                if (fileBuffered.readLine().contains(fileHash)) {
-                    return fileBuffered.readLine().replace(" => " + fileHash, "");
+            String readLine = fileBuffered.readLine();
+            while (readLine != null) {
+                if (readLine.contains(fileHash)) {
+                    return readLine.replace(fileHash + " => " , "");
                 }
+                readLine = fileBuffered.readLine();
             }
         } catch (FileNotFoundException error) {throw new KeyNotFoundException();}
         return null;
@@ -43,7 +47,11 @@ public class FileManager {
     public boolean checkKey(String key) throws IOException {
         try{
             BufferedReader fileBuffered = new BufferedReader(new FileReader("./Keys.txt"));
-            while (fileBuffered.readLine() != null) {if (fileBuffered.readLine().contains(key)) return true;}
+            String readLine = fileBuffered.readLine();
+            while (readLine != null) {
+                if (readLine.contains(key)) return true;
+                readLine = fileBuffered.readLine();
+            }
         } catch (FileNotFoundException error) {return false;}
         return false;
 

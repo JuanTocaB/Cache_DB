@@ -38,16 +38,16 @@ public class TreeMap <TKey extends Comparable<TKey>, TValue> {
 
     private MapEntry<TKey, TValue> createEntryForSearch(TKey key) {return new MapEntry<TKey, TValue>(key, null);}
 
-    public TValue get(TKey key) {
+    public TValue get(TKey key) throws KeyNotFoundException {
         var treeNode = treeNodes.dataSearch(createEntryForSearch(key));
         if (treeNode == null) {throw new KeyNotFoundException();}
         MapEntry<TKey, TValue> entry = treeNode.getNodeData();
         return entry.getValue();
     }
 
-    public boolean remove(TKey key) {
-        if (!contains(key)) return false;
+    public void remove(TKey key) {
+        if (!contains(key)) return;
         treeNodes.removeNode(createEntryForSearch(key));
-        return true;
     }
+
 }

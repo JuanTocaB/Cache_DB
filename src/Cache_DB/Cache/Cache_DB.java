@@ -3,32 +3,47 @@ package Cache_DB.Cache;
 import Cache_DB.lib.Exceptions.*;
 import Cache_DB.lib.*;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
+import java.lang.ref.SoftReference;
 
 public class Cache_DB implements ICache{
 
-    private TreeMap<String, String> Cache;
-    private FileManager fileManager = new FileManager();
+    private final TreeMap<String, String> Cache = new TreeMap<>();
+    private final FileManager fileManager = new FileManager();
+
 
     /**
      * Get all keys stored in cache.
      * @return array of stored keys
      */
     @Override
-    public String[] getAll() {
-
-
-        return new String[0];
+    public String[] getAll() throws IOException {
+        String filePath = "./Keys.txt";
+        FileReader file = new FileReader(filePath);
+        BufferedReader fileBuffered = new BufferedReader(file);
+        String readLine = fileBuffered.readLine();
+        String[] result = new String[this.size()];
+        int counter = 0;
+        while (readLine != null) {
+            String[] splitLine = readLine.split(" => ", 2);
+            result[counter] = splitLine[0];
+            readLine = fileBuffered.readLine();
+            counter++;
+        }
+        return result;
     }
     /**
      * Get the value associated with the key passed as argument.
      * @param key Key to look for
      * @return The value associated with the key
-     * @throws KeyNotFoundException if key does not exist.
      */
     @Override
     public String get(String key) throws IOException {
-        return fileManager.getFileValue(key);
+        Cache.put(key, fileManager.getFileValue(key));
+        return Cache.get(key);
     }
     /**
      * Return the value of key passed as argument. Otherwise, return the
@@ -40,7 +55,10 @@ public class Cache_DB implements ICache{
      */
     @Override
     public String getOrDefault(String key, String defaultValue) {
-        return null;
+        try {
+            Cache.put(key, fileManager.getFileValue(key));
+            return Cache.get(key);}
+        catch (KeyNotFoundException | IOException error) {return defaultValue;}
     }
 
     /**
@@ -50,8 +68,9 @@ public class Cache_DB implements ICache{
      */
     @Override
     public boolean exists(String key) throws IOException {
-        fileManager.checkKey(key);
-        return false;
+        try {Cache.put(key, fileManager.getFileValue(key));}
+        catch (KeyNotFoundException error) {return false;}
+        return Cache.contains(key);
     }
     /**
      * Add or update the value associated to a key.
@@ -59,16 +78,19 @@ public class Cache_DB implements ICache{
      * @param value Value to be stored.
      */
     @Override
-    public void put(String key, String value) {}
+    public void put(String key, String value) throws IOException {
+        Cache.put(key, value);
+        fileManager.createFile(key, value);
+    }
     /**
      * Add a value to a new key. If key already exists, it throws an exception.
      * @param key Key to be stored.
      * @param value Value to be stored.
-     * @throws DuplicatedKeyException the key already exists.
      */
     @Override
-    public void addNew(String key, String value) throws IOException {
-        fileManager.createFile(key, value);
+    public void addNew(String key, String value) throws IOException, DuplicatedKeyException {
+        if (Cache.contains(key)) throw new DuplicatedKeyException();
+        else {fileManager.createFile(key, value);}
     }
     /**
      * Remove a key and its value.
@@ -76,16 +98,27 @@ public class Cache_DB implements ICache{
      * @throws KeyNotFoundException if key does not exist.
      */
     @Override
-    public void remove(String key) {
-        fileManager.deleteFile(key);
+    public void remove(String key) throws KeyNotFoundException, IOException {
+        Cache.put(key, fileManager.getFileValue(key));
+        if (!Cache.contains(key)) throw new KeyNotFoundException();
+        else {fileManager.deleteFile(key);}
     }
     /**
      * Count the keys (and values) stored in cache.
      * @return Count of keys.
      */
     @Override
-    public int size() {
-        return Cache.treeSize();
+    public int size() throws IOException {
+        String filePath = "./Keys.txt";
+        FileReader file = new FileReader(filePath);
+        BufferedReader fileBuffered = new BufferedReader(file);
+        String readLine = fileBuffered.readLine();
+        int counter = 0;
+        while (readLine != null) {
+            counter++;
+            readLine = fileBuffered.readLine();
+        }
+        return counter;
     }
 
 }

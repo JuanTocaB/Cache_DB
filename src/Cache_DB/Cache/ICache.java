@@ -3,6 +3,7 @@ package Cache_DB.Cache;
 import Cache_DB.lib.Exceptions.DuplicatedKeyException;
 import Cache_DB.lib.Exceptions.KeyNotFoundException;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 
 public interface ICache {
@@ -10,7 +11,7 @@ public interface ICache {
      * Get all keys stored in cache.
      * @return array of stored keys
      */
-    String[] getAll();
+    String[] getAll() throws IOException;
     /**
      * Get the value associated with the key passed as argument.
      * @param key Key to look for
@@ -38,23 +39,23 @@ public interface ICache {
      * @param key Key to be stored.
      * @param value Value to be stored.
      */
-    void put(String key, String value);
+    void put(String key, String value) throws IOException;
     /**
      * Add a value to a new key. If key already exists, it throws an exception.
      * @param key Key to be stored.
      * @param value Value to be stored.
      * @throws DuplicatedKeyException the key already exists.
      */
-    void addNew(String key, String value) throws IOException;
+    void addNew(String key, String value) throws IOException, DuplicatedKeyException;
     /**
      * Remove a key and its value.
      * @param key Key to be stored.
      * @throws KeyNotFoundException if key does not exist.
      */
-    void remove(String key);
+    void remove(String key) throws IOException;
     /**
      * Count the keys (and values) stored in cache.
      * @return Count of keys.
      */
-    int size();
+    int size() throws IOException;
 }
