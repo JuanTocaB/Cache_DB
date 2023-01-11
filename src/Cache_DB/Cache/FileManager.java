@@ -49,11 +49,10 @@ public class FileManager {
 
     }
 
-    public boolean checkHash(String hash) throws IOException {
-        try {new FileReader("./"+ hash + ".txt");}
-        catch (FileNotFoundException error) {return false;}
-        return true;
-
+    public void deleteFile(String Key) {
+        String fileHash = String.format("%d", Key.hashCode());
+        File fileToDelete = new File("./" + fileHash + ".txt");
+        fileToDelete.delete();
     }
 
 }
