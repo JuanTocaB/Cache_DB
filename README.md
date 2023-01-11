@@ -1,5 +1,4 @@
-<h1 align="center">Welcome to Cache_DB </h1>
-<a href="https://www.flaticon.com/free-icons/cache" title="cache icons">Cache icons created by smashingstocks - Flaticon</a>
+<h1 align="center">Welcome to Cache_DB :floppy_disk:</h1>
 <p>
   <img alt="Version" src="https://img.shields.io/badge/version-1.0-blue.svg?cacheSeconds=2592000" />
   <a href="empty" target="_blank">
