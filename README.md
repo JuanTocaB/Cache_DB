@@ -9,7 +9,7 @@
 
 ## Description
 
-> It's a degree proyect where we had to develop a 
+> It's a degree proJect where we had to develop a 
 >simple cache with a key-value relation using java 
 
 ### 🏠 [Homepage]()
